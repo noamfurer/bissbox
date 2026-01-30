@@ -9,6 +9,13 @@ function PhoneHint() {
   return <div className="small">טלפון בפורמט 9725XXXXXXXX (רק ספרות)</div>;
 }
 
+function openSupportWhatsapp() {
+  const phone = "972526762224";
+  const text = "היי, יש לי שאלה בנוגע לביסבוקס";
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
+
 export default function Register() {
   const [familyName, setFamilyName] = useState("");
   const [parent1Name, setParent1Name] = useState("הורה 1");
@@ -38,18 +45,20 @@ export default function Register() {
   };
 
   const toggleKidAllergy = (idx: number, a: Allergy) => {
-    setKids(kids.map((k, i) => {
-      if (i !== idx) return k;
-      const has = k.allergies.includes(a);
-      return { ...k, allergies: has ? k.allergies.filter(x => x !== a) : [...k.allergies, a] };
-    }));
+    setKids(
+      kids.map((k, i) => {
+        if (i !== idx) return k;
+        const has = k.allergies.includes(a);
+        return { ...k, allergies: has ? k.allergies.filter((x) => x !== a) : [...k.allergies, a] };
+      })
+    );
   };
 
   const valid = useMemo(() => {
     if (!familyName.trim()) return false;
     if (!parent1Phone.trim() && !parent2Phone.trim()) return false;
     if (!email.trim()) return false;
-    const named = kids.filter(k => k.name.trim());
+    const named = kids.filter((k) => k.name.trim());
     if (named.length < 1) return false;
     return true;
   }, [familyName, parent1Phone, parent2Phone, email, kids]);
@@ -70,7 +79,10 @@ export default function Register() {
         parent2Name,
         parent2Phone,
         email,
-        children: kids.filter(k => k.name.trim()).slice(0, 5).map(k => ({ name: k.name.trim(), allergies: k.allergies })),
+        children: kids
+          .filter((k) => k.name.trim())
+          .slice(0, 5)
+          .map((k) => ({ name: k.name.trim(), allergies: k.allergies })),
       };
       const r = await apiRegisterFamily(payload);
       const link = `${window.location.origin}/f/${r.familyToken}`;
@@ -84,37 +96,109 @@ export default function Register() {
 
   return (
     <div className="card">
+      {/* Top split area */}
+      <div
+        className="row"
+        style={{
+          alignItems: "stretch",
+          gap: 16,
+          flexWrap: "wrap",
+        }}
+      >
+        {/* GIF - on mobile should appear first */}
+        <div className="col" style={{ minWidth: 260, order: 0 }}>
+          <div
+            style={{
+              width: "100%",
+              aspectRatio: "16 / 9",
+              borderRadius: 18,
+              overflow: "hidden",
+              border: "2px solid #e5e7eb",
+              background: "#f3f4f6",
+            }}
+          >
+            <img
+              src="/bissbox.gif"
+              alt="BissBox"
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+          </div>
+        </div>
+
+        {/* Text - on mobile after gif */}
+        <div className="col" style={{ minWidth: 260, order: 1 }}>
+          <div className="h1" style={{ marginBottom: 8 }}>ברוכים הבאים! 👋</div>
+          <div className="p" style={{ marginTop: 8 }}>
+            איזה כיף שבאתם ל- BissBox. כאן בוחרים אוכל טעים ובריא לקופסת האוכל
+            <br />
+            הילדים בוחרים - וההורים מכינים 😊
+          </div>
+          <div className="p" style={{ marginTop: 10 }}>
+            התחילו בהרשמה קצרה - בסופה תקבלו קישור משפחתי.
+            <br />
+            אל תשכחו לשמור את הקישור ולשלוח לעצמכם ולטאבלט של הילדים...
+          </div>
+
+          <div style={{ marginTop: 12 }}>
+            <button className="btn secondary" type="button" onClick={openSupportWhatsapp}>
+              אם יש שאלות, מוזמנים לדבר איתי
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <hr className="sep" />
+
       <div className="h1">הרשמה למשפחה</div>
       <div className="p">בסוף תקבלו לינק משפחתי לילדים.</div>
 
-      {err && <div className="notice" style={{ marginTop: 12 }}>⚠️ {err}</div>}
+      {err && (
+        <div className="notice" style={{ marginTop: 12 }}>
+          ⚠️ {err}
+        </div>
+      )}
 
       <label className="label">שם משפחה</label>
-      <input className="input" value={familyName} onChange={e => setFamilyName(e.target.value)} placeholder="לדוגמה: משפחת פורר" />
+      <input
+        className="input"
+        value={familyName}
+        onChange={(e) => setFamilyName(e.target.value)}
+        placeholder="לדוגמה: משפחת ישראלי"
+      />
 
       <div className="row">
         <div className="col">
           <label className="label">שם הורה 1</label>
-          <input className="input" value={parent1Name} onChange={e => setParent1Name(e.target.value)} />
+          <input className="input" value={parent1Name} onChange={(e) => setParent1Name(e.target.value)} />
           <label className="label">טלפון הורה 1</label>
-          <input className="input" value={parent1Phone} onChange={e => setParent1Phone(e.target.value)} placeholder="9725..." />
+          <input
+            className="input"
+            value={parent1Phone}
+            onChange={(e) => setParent1Phone(e.target.value)}
+            placeholder="9725..."
+          />
           <PhoneHint />
         </div>
 
         <div className="col">
           <label className="label">שם הורה 2</label>
-          <input className="input" value={parent2Name} onChange={e => setParent2Name(e.target.value)} />
+          <input className="input" value={parent2Name} onChange={(e) => setParent2Name(e.target.value)} />
           <label className="label">טלפון הורה 2</label>
-          <input className="input" value={parent2Phone} onChange={e => setParent2Phone(e.target.value)} placeholder="9725..." />
+          <input
+            className="input"
+            value={parent2Phone}
+            onChange={(e) => setParent2Phone(e.target.value)}
+            placeholder="9725..."
+          />
           <PhoneHint />
         </div>
       </div>
 
       <label className="label">אימייל</label>
-      <input className="input" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com" />
+      <input className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" />
 
       <hr className="sep" />
-      <div className="h2">ילדים (עד 5)</div>
+      <div className="h2">רישום ילדים</div>
 
       {kids.map((k, idx) => (
         <div key={idx} className="card" style={{ padding: 14, marginBottom: 12, background: "#fcfcfc" }}>
@@ -128,15 +212,20 @@ export default function Register() {
           </div>
 
           <label className="label">שם הילד</label>
-          <input className="input" value={k.name} onChange={e => setKidName(idx, e.target.value)} placeholder="לדוגמה: שחר" />
+          <input
+            className="input"
+            value={k.name}
+            onChange={(e) => setKidName(idx, e.target.value)}
+            placeholder="לדוגמה: שחר"
+          />
 
           <label className="label">אלרגיות בכיתה</label>
           <div className="pillrow">
-            {(Object.keys(allergyLabels) as Array<keyof typeof allergyLabels>).map(a => (
+            {(Object.keys(allergyLabels) as Array<keyof typeof allergyLabels>).map((a) => (
               <div
                 key={a}
                 className={"pill" + (k.allergies.includes(a) ? " selected" : "")}
-                onClick={() => toggleKidAllergy(idx, a)}
+                onClick={() => toggleKidAllergy(idx, a as Allergy)}
                 role="button"
                 aria-label={allergyLabels[a]}
               >
@@ -145,7 +234,7 @@ export default function Register() {
             ))}
             <div
               className={"pill" + (k.allergies.length === 0 ? " selected" : "")}
-              onClick={() => setKids(kids.map((kk, i) => i === idx ? { ...kk, allergies: [] } : kk))}
+              onClick={() => setKids(kids.map((kk, i) => (i === idx ? { ...kk, allergies: [] } : kk)))}
               role="button"
             >
               אין אלרגיות
@@ -166,7 +255,8 @@ export default function Register() {
 
       {resultLink && (
         <div style={{ marginTop: 14 }} className="notice">
-          ✅ נוצר לינק משפחתי:<br />
+          ✅ נוצר לינק משפחתי:
+          <br />
           <div style={{ fontWeight: 800, fontSize: 18, marginTop: 6, direction: "ltr" }}>{resultLink}</div>
           <div className="small" style={{ marginTop: 6 }}>אפשר לשמור במסך הבית של הטאבלט.</div>
         </div>

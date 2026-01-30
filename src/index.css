@@ -47,6 +47,7 @@ a { color: inherit; }
 .input:focus, .select:focus { border-color: #cbd5e1; }
 
 .btn {
+  font-family: inherit;
   padding: 14px 16px;
   border-radius: 16px;
   border: 2px solid #111;
