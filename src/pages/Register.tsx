@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { apiRegisterFamily } from "../app/api";
-import { allergyLabels, type Allergy } from "../app/items";
+import { allergyLabels } from "../app/items";
+import type { Allergy } from "../app/types";
 
 type KidForm = { name: string; allergies: Allergy[] };
 

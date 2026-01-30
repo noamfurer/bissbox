@@ -101,7 +101,7 @@ export default function FamilyPage() {
     setSelectedChildIds([]);
   }
 
-  function toggleItem(categoryKey: any, itemId: string) {
+  function toggleItem(categoryKey: import("../app/items").CategoryKey, itemId: string) {
     setEntries(prev => {
       const next = { ...prev };
       for (const childId of selectedChildIds) {
@@ -115,7 +115,7 @@ export default function FamilyPage() {
     });
   }
 
-  function setOther(categoryKey: any, text: string) {
+  function setOther(categoryKey: import("../app/items").CategoryKey, text: string) {
     const key = (categoryKey + "Other") as keyof EntryState;
     setEntries(prev => {
       const next = { ...prev };
@@ -128,8 +128,8 @@ export default function FamilyPage() {
     });
   }
 
-  function isItemDisabledForSelectedChildren(categoryKey: any, itemId: string) {
-    const item = itemsByCategory[categoryKey].find(x => x.id === itemId);
+  function isItemDisabledForSelectedChildren(categoryKey: import("../app/items").CategoryKey, itemId: string) {
+    const item = itemsByCategory[categoryKey].find((x) => x.id === itemId);
     if (!item) return false;
     // If at least one selected child blocks it, disable
     for (const childId of selectedChildIds) {
@@ -139,7 +139,7 @@ export default function FamilyPage() {
     return false;
   }
 
-  function tileSelectedState(categoryKey: any, itemId: string) {
+  function tileSelectedState(categoryKey: import("../app/items").CategoryKey, itemId: string) {
     // show selected if ALL selected children have it
     if (selectedChildIds.length === 0) return false;
     for (const childId of selectedChildIds) {

@@ -45,7 +45,7 @@ export const itemsByCategory: Record<CategoryKey, Item[]> = {
     { id: "omelet", label: "חביתה", emoji: "🥘" },
   ],
   veg: [
-    { id: "cucumber", label: "מלפכון", emoji: "🥒" },
+    { id: "cucumber", label: "מלפפון", emoji: "🥒" },
     { id: "pepper", label: "גמבה", emoji: "🫑" },
     { id: "cherry_tomatoes", label: "עגבניות שרי", emoji: "🍅" },
     { id: "lettuce", label: "חסה", emoji: "🥬" },
